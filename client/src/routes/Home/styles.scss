@@ -1,0 +1,26 @@
+.home-page-demo {
+  max-width: 100%;
+}
+.home-logo {
+  height: 40px;
+}
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 120px;
+  height: 70px;
+}
+.home-page-login {
+  color: #fff;
+  background-color: #3d5ce6;
+  height: 40px;
+  width: 100px;
+  border-radius: 8px;
+}
+.nav-item {
+  font-size: 18px;
+}
+.nav-item:not(:first-child) {
+  margin-left: 48px;
+}
