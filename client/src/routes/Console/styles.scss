@@ -1,0 +1,9 @@
+.console-page {
+  .ant-menu-item-selected {
+    background-color: #3d5ce6 !important;
+    color: white;
+    &:hover {
+      color: white;
+    }
+  }
+}

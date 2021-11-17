@@ -1,0 +1,16 @@
+.register-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+  width: 650px;
+  margin: 0 auto;
+  .register-title {
+    margin-bottom: 24px;
+    align-self: flex-start;
+  }
+  .register-form {
+    align-self: stretch;
+  }
+}
