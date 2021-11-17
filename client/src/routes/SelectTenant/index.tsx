@@ -26,15 +26,15 @@ export const SelectTenant = () => {
   }, [userInfo])
 
   return (
-    <Spin spinning={loading}>
-      <Modal
-        centered
-        footer={null}
-        visible
-        mask={false}
-        closable={false}
-        width={500}
-      >
+    <Modal
+      centered
+      footer={null}
+      visible
+      mask={false}
+      closable={false}
+      width={500}
+    >
+      <Spin spinning={loading}>
         {tenantList?.length ? (
           <List
             itemLayout="horizontal"
@@ -78,7 +78,7 @@ export const SelectTenant = () => {
             暂无组织，<Link to={'/register'}>去创建</Link>
           </p>
         )}
-      </Modal>
-    </Spin>
+      </Spin>
+    </Modal>
   )
 }
