@@ -1,11 +1,14 @@
 import { User } from '@authing/react-ui-components'
+import { globalEventBus } from './globalEventBus'
 
 export const setUserInfo = (user: User) => {
-  return localStorage.setItem('user_info', JSON.stringify(user))
+  localStorage.setItem('user_info', JSON.stringify(user))
+  globalEventBus.emit('update-user-or-tenant-info')
 }
 export const getUserInfo = () => {
   return JSON.parse(localStorage.getItem('user_info') || 'null') as User | null
 }
 export const clearUserInfo = () => {
-  return localStorage.removeItem('user_info')
+  localStorage.removeItem('user_info')
+  globalEventBus.emit('update-user-or-tenant-info')
 }

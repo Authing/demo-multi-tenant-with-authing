@@ -1,7 +1,9 @@
 import { Tenant } from '../api/tenant'
+import { globalEventBus } from './globalEventBus'
 
 export const setTenantInfo = (tenant: Tenant) => {
-  return localStorage.setItem('tenant_info', JSON.stringify(tenant))
+  localStorage.setItem('tenant_info', JSON.stringify(tenant))
+  globalEventBus.emit('update-user-or-tenant-info')
 }
 export const getTenantInfo = () => {
   return JSON.parse(
@@ -9,5 +11,6 @@ export const getTenantInfo = () => {
   ) as Tenant | null
 }
 export const clearTenantInfo = () => {
-  return localStorage.removeItem('tenant_info')
+  localStorage.removeItem('tenant_info')
+  globalEventBus.emit('update-user-or-tenant-info')
 }

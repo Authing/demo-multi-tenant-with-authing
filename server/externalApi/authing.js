@@ -60,15 +60,80 @@ async function fetchUserTenants(token, id) {
 
     return res.data.data.tenants
   } catch (e) {
-    console.log(e)
+    console.log(e, '>>>>')
     return null
   }
 }
 
-async function addUserToTenant(token, { userIds, tenantId }) {}
+async function addUserToTenant(token, { userIds, tenantId }) {
+  try {
+    const res = await httpClient.post(
+      `${authing.appHost}/api/v2/tenant/${tenantId}/user`,
+      {
+        userIds,
+      },
+      {
+        headers: {
+          'x-authing-userpool-id': authing.userPoolId,
+          Authorization: token,
+        },
+      }
+    )
+
+    return res.data.data
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
+async function fetchTenantUserList(token, { tenantId, page = 1, limit = 10 }) {
+  try {
+    const res = await httpClient.get(
+      `${authing.appHost}/api/v2/tenant/${tenantId}/users`,
+      {
+        params: {
+          page,
+          limit,
+        },
+        headers: {
+          'x-authing-userpool-id': authing.userPoolId,
+          Authorization: token,
+        },
+      }
+    )
+
+    return res.data.data
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
+async function fetchTenantDetail(token, tenantId) {
+  try {
+    const res = await httpClient.get(
+      `${authing.appHost}/api/v2/tenant/${tenantId}`,
+      {
+        headers: {
+          'x-authing-userpool-id': authing.userPoolId,
+          Authorization: token,
+        },
+      }
+    )
+
+    return res.data.data
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
 
 module.exports = {
   createTenant,
+  addUserToTenant,
   fetchUserTenants,
+  fetchTenantDetail,
+  fetchTenantUserList,
   fetchManagementToken,
 }

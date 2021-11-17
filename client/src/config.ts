@@ -1,3 +1,4 @@
 export const config = {
-  apiBaseUrl: 'http://multi-tenant-api.lixpng.top',
+  apiBaseUrl: 'http://localhost:3006',
+  pageBaseHost: 'localhost:3007',
 }

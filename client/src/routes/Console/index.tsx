@@ -1,6 +1,7 @@
 import { Layout, Menu } from 'antd'
 import {
   DashboardOutlined,
+  ExclamationCircleOutlined,
   SettingOutlined,
   TeamOutlined,
 } from '@ant-design/icons'
@@ -12,10 +13,13 @@ import {
   useNavigate,
 } from 'react-router'
 import { UthingHeader } from '../../components/Header'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import './styles.scss'
 import { Setting } from './Setting'
-import { User } from './User'
+import { UserPage } from './User'
+import { getTenantInfo, setTenantInfo } from '../../utils/tenant'
+import { getUserInfo, setUserInfo } from '../../utils/user'
+import { Tenant } from './Tenant'
 
 const menus = [
   {
@@ -36,6 +40,12 @@ const menus = [
     title: '配置',
     path: '/console/setting',
   },
+  {
+    key: 'tenantInfo',
+    icon: <ExclamationCircleOutlined />,
+    title: '企业信息',
+    path: '/console/tenant',
+  },
 ]
 
 export const ConsolePage = () => {
@@ -47,6 +57,20 @@ export const ConsolePage = () => {
       .filter((item) => matchPath(item.path, location.pathname))
       .map((item) => item.key)
   }, [location.pathname])
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+
+    const userInfo = JSON.parse(url.searchParams.get('user_info') || 'null')
+    const tenantInfo = JSON.parse(url.searchParams.get('tenant_info') || 'null')
+
+    if (userInfo && tenantInfo) {
+      setTenantInfo(tenantInfo)
+      setUserInfo(userInfo)
+    } else if (!getTenantInfo() || !getUserInfo()) {
+      navigate('/login')
+    }
+  }, [navigate])
 
   return (
     <Layout
@@ -97,8 +121,9 @@ export const ConsolePage = () => {
                 ></img>
               }
             ></Route>
-            <Route path="/user" element={<User />}></Route>
+            <Route path="/user" element={<UserPage />}></Route>
             <Route path="/setting" element={<Setting />}></Route>
+            <Route path="/tenant" element={<Tenant />}></Route>
           </Routes>
         </Layout.Content>
       </Layout>

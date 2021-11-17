@@ -41,17 +41,25 @@ export const Register = () => {
       return
     }
 
-    await registerTenant({
-      ...values,
-      logo: logoUrl as string,
-      adminId: getUserInfo()!.id,
-    })
+    setSubmitting(true)
 
-    notification.success({
-      message: '创建成功',
-    })
+    try {
+      await registerTenant({
+        ...values,
+        logo: logoUrl as string,
+        adminId: getUserInfo()!.id,
+      })
 
-    navigate('/console/dashboard')
+      notification.success({
+        message: '创建成功',
+      })
+
+      navigate('/console/dashboard')
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (

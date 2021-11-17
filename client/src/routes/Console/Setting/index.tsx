@@ -1,5 +1,5 @@
 import { Tabs } from 'antd'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import './styles.scss'
 
 const tabs = [

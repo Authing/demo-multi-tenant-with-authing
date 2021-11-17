@@ -48,6 +48,7 @@
     "jest-circus": "26.6.0",
     "jest-resolve": "26.6.0",
     "jest-watch-typeahead": "0.6.1",
+    "js-event-bus": "^1.1.1",
     "less": "^4.1.2",
     "less-loader": "7.x",
     "mini-css-extract-plugin": "0.11.3",

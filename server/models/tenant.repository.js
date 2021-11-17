@@ -7,13 +7,11 @@ const Tenant = sequelize.define('Tenant', {
     type: DataTypes.STRING,
     allowNull: false,
     comment: '绑定的 Authing 租户 ID',
-    unique: true,
   },
   adminId: {
     type: DataTypes.STRING,
     allowNull: false,
     comment: '管理用户 ID',
-    unique: true,
   },
   domain: {
     type: DataTypes.STRING,
@@ -42,6 +40,13 @@ class TenantService {
     return await Tenant.findOne({
       where: {
         domain,
+      },
+    })
+  }
+  async findByAuthingIds(ids) {
+    return await Tenant.findAll({
+      where: {
+        authingTenantId: ids,
       },
     })
   }

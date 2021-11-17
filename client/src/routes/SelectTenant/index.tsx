@@ -1,17 +1,19 @@
 import { Modal, Spin, List, Avatar, Button } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { fetchUserTenantList, Tenant } from '../../api/tenant'
-import { setTenantInfo } from '../../utils/tenant'
-import { getUserInfo } from '../../utils/user'
+import { config } from '../../config'
 
 export const SelectTenant = () => {
   const [loading, setLoading] = useState(false)
   const [tenantList, setTenantList] = useState<Tenant[] | null>([])
   const navigate = useNavigate()
+  const userInfo = useMemo(() => {
+    const url = new URL(window.location.href)
+    return JSON.parse(url.searchParams.get('user_info') || 'null')
+  }, [])
 
   useEffect(() => {
-    const userInfo = getUserInfo()
     setLoading(true)
 
     if (userInfo) {
@@ -21,7 +23,7 @@ export const SelectTenant = () => {
         })
         .finally(() => setLoading(false))
     }
-  }, [])
+  }, [userInfo])
 
   return (
     <Spin spinning={loading}>
@@ -56,14 +58,15 @@ export const SelectTenant = () => {
                 <List.Item.Meta
                   avatar={<Avatar src={tenant.logo} />}
                   title={
-                    <Link
-                      to={`/console/dashboard`}
-                      onClick={() => {
-                        setTenantInfo(tenant)
-                      }}
+                    <a
+                      href={`${window.location.protocol}//${tenant.domain}.${
+                        config.pageBaseHost
+                      }/console/dashboard?user_info=${JSON.stringify(
+                        userInfo
+                      )}&tenant_info=${JSON.stringify(tenant)}`}
                     >
                       {tenant.name}
-                    </Link>
+                    </a>
                   }
                   description={tenant.description || '--'}
                 />

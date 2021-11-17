@@ -1,16 +1,21 @@
+import { User } from '@authing/react-ui-components'
 import { Avatar, Button, Dropdown, Layout, Menu } from 'antd'
-import { FC, useMemo } from 'react'
+import { FC, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { getTenantInfo } from '../../utils/tenant'
+import { Tenant } from '../../api/tenant'
+import { useGlobalEventBus } from '../../utils/globalEventBus'
+import { clearTenantInfo, getTenantInfo } from '../../utils/tenant'
 import { clearUserInfo, getUserInfo } from '../../utils/user'
 
 export const UthingHeader: FC = ({ children }) => {
   const navigate = useNavigate()
-  const tenantInfo = getTenantInfo()
+  const [user, setUser] = useState<User | null>(getUserInfo())
+  const [tenantInfo, setTenantInfo] = useState<Tenant | null>(getTenantInfo())
 
-  const user = useMemo(() => {
-    return getUserInfo()
-  }, [])
+  useGlobalEventBus('update-user-or-tenant-info', () => {
+    setUser(getUserInfo())
+    setTenantInfo(getTenantInfo())
+  })
 
   return (
     <Layout.Header
@@ -43,7 +48,6 @@ export const UthingHeader: FC = ({ children }) => {
                 <Menu.Item
                   key="dashboard"
                   onClick={() => {
-                    clearUserInfo()
                     navigate(
                       tenantInfo ? '/console/dashboard' : '/select-tenant'
                     )
@@ -55,6 +59,7 @@ export const UthingHeader: FC = ({ children }) => {
                   key="logout"
                   onClick={() => {
                     clearUserInfo()
+                    clearTenantInfo()
                     navigate('/login')
                   }}
                 >

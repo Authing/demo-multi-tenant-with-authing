@@ -1,8 +1,24 @@
 import { Layout } from 'antd'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router'
 import { UthingHeader } from '../../components/Header'
+import { getTenantDomain } from '../../utils/getTenantDomain'
+import { getUserInfo } from '../../utils/user'
 import './styles.scss'
 
 export const Home = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (getTenantDomain()) {
+      if (getUserInfo()) {
+        navigate('/console/dashboard')
+      } else {
+        navigate('/login')
+      }
+    }
+  }, [navigate])
+
   return (
     <Layout className="home-page">
       <nav>
