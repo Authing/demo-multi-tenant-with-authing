@@ -1,8 +1,9 @@
-import { AuthingGuard } from '@authing/react-ui-components'
-import { useEffect } from 'react'
+import { Guard } from '@authing/react-ui-components'
+import { Spin } from 'antd'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { fetchTenantByDomain, Tenant } from '../../api/tenant'
-import { APP_HOST, APP_ID } from '../../constants/authing'
+import { APP_ID } from '../../constants/authing'
 import { getTenantDomain } from '../../utils/getTenantDomain'
 import { getUserInfo } from '../../utils/user'
 import './styles.scss'
@@ -21,6 +22,19 @@ const getTenantInfo = async () => {
 
 export const Login = () => {
   const navigate = useNavigate()
+  const [tenantInfo, setTenantInfo] = useState<Tenant | undefined>(undefined)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(true)
+    getTenantInfo()
+      .then((tenant) => {
+        setTenantInfo(tenant)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
 
   useEffect(() => {
     if (getUserInfo()) {
@@ -30,27 +44,37 @@ export const Login = () => {
 
   return (
     <div className="login-page">
-      <AuthingGuard
-        appId={APP_ID}
-        config={{
-          appHost: APP_HOST,
-          localesConfig: {
-            isShowChange: false,
-          },
-        }}
-        onLogin={async (user) => {
-          const tenantInfo = await getTenantInfo()
-          if (tenantInfo) {
-            navigate(
-              `/console/dashboard?user_info=${JSON.stringify(
-                user
-              )}&tenant_info=${JSON.stringify(tenantInfo)}`
-            )
-          } else {
-            navigate(`/select-tenant?user_info=${JSON.stringify(user)}`)
-          }
-        }}
-      />
+      {loading ? (
+        <div
+          style={{
+            width: '100vw',
+            height: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 100,
+          }}
+        >
+          <Spin spinning={loading}></Spin>
+        </div>
+      ) : (
+        <Guard
+          appId={APP_ID}
+          tenantId={tenantInfo?.authingTenantId}
+          config={{}}
+          onLogin={async (user) => {
+            if (tenantInfo) {
+              navigate(
+                `/console/dashboard?user_info=${JSON.stringify(
+                  user
+                )}&tenant_info=${JSON.stringify(tenantInfo)}`
+              )
+            } else {
+              navigate(`/select-tenant?user_info=${JSON.stringify(user)}`)
+            }
+          }}
+        />
+      )}
     </div>
   )
 }
