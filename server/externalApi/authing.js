@@ -67,9 +67,24 @@ async function fetchTenantDetail(tenantId) {
 }
 
 // 移除租户成员
-async function deleteUser(userId) {
+async function removeMember(tenantId, userId) {
   try {
-    const res = await managementClient.users.delete(userId)
+    const res = await managementClient.tenant.removeMembers(tenantId, userId)
+
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
+// 获取成员权限
+async function fetchMemberPermissions(userId) {
+  try {
+    const res = await managementClient.users.listAuthorizedResources(
+      userId,
+      authing.appId
+    )
 
     return res
   } catch (e) {
@@ -79,10 +94,11 @@ async function deleteUser(userId) {
 }
 
 module.exports = {
-  deleteUser,
+  removeMember,
   createTenant,
   addUserToTenant,
   fetchUserTenants,
   fetchTenantDetail,
   fetchTenantUserList,
+  fetchMemberPermissions,
 }

@@ -3,10 +3,10 @@ import { Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { fetchTenantByDomain, Tenant } from '../../api/tenant'
-import { APP_HOST, APP_ID, CORE_API_HOST } from '../../constants/authing'
+import { APP_ID, CORE_API_HOST } from '../../constants/authing'
 import { getTenantDomain } from '../../utils/getTenantDomain'
 import { getUserInfo } from '../../utils/user'
-import './styles.scss'
+import './styles.less'
 
 const getTenantInfo = async () => {
   const tenantDomain = getTenantDomain()
@@ -65,7 +65,6 @@ export const Login = () => {
             host: CORE_API_HOST,
             // appHost: APP_HOST,
           }}
-          // @ts-ignore
           onLogin={async (user) => {
             console.log(user, '>>>>>>>>>>>>')
             if (tenantInfo) {

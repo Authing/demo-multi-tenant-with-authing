@@ -1,6 +1,6 @@
 import { Tabs } from 'antd'
 import { useCallback, useState } from 'react'
-import './styles.scss'
+import './styles.less'
 
 const tabs = [
   {

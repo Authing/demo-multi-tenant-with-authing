@@ -2,6 +2,7 @@ import { Layout, Menu } from 'antd'
 import {
   DashboardOutlined,
   ExclamationCircleOutlined,
+  FileProtectOutlined,
   SettingOutlined,
   TeamOutlined,
 } from '@ant-design/icons'
@@ -14,12 +15,13 @@ import {
 } from 'react-router'
 import { UthingHeader } from '../../components/Header'
 import { useEffect, useMemo } from 'react'
-import './styles.scss'
+import './styles.less'
 import { Setting } from './Setting'
 import { UserPage } from './User'
 import { getTenantInfo, setTenantInfo } from '../../utils/tenant'
 import { getUserInfo, setUserInfo } from '../../utils/user'
 import { Tenant } from './Tenant'
+import { Permission } from './Permission'
 
 const menus = [
   {
@@ -35,16 +37,22 @@ const menus = [
     path: '/console/user',
   },
   {
-    key: 'setting',
-    icon: <SettingOutlined />,
-    title: '配置',
-    path: '/console/setting',
-  },
-  {
     key: 'tenantInfo',
     icon: <ExclamationCircleOutlined />,
     title: '企业信息',
     path: '/console/tenant',
+  },
+  {
+    key: 'permission',
+    icon: <FileProtectOutlined />,
+    title: '权限信息',
+    path: '/console/permission',
+  },
+  {
+    key: 'setting',
+    icon: <SettingOutlined />,
+    title: '配置',
+    path: '/console/setting',
   },
 ]
 
@@ -124,6 +132,7 @@ export const ConsolePage = () => {
             <Route path="/user" element={<UserPage />}></Route>
             <Route path="/setting" element={<Setting />}></Route>
             <Route path="/tenant" element={<Tenant />}></Route>
+            <Route path="/permission" element={<Permission />}></Route>
           </Routes>
         </Layout.Content>
       </Layout>

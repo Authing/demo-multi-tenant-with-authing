@@ -102,7 +102,10 @@ export const UserPage = () => {
                       Modal.confirm({
                         title: '确认移除该成员？',
                         onOk: async () => {
-                          await removeMember(value)
+                          await removeMember(
+                            tenantInfo?.authingTenantId!,
+                            value
+                          )
                           notification.success({
                             message: '移除成功',
                           })

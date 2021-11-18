@@ -44,8 +44,16 @@ export const fetchUsersOfTenant = async (
   return res.data
 }
 
-export const removeMember = async (userId: string) => {
-  const res = await httpClient.delete(`/api/tenant/members/${userId}`)
+export const removeMember = async (tenantId: string, userId: string) => {
+  const res = await httpClient.delete(
+    `/api/tenant/${tenantId}/members?userId=${userId}`
+  )
+
+  return res.data
+}
+
+export const fetchMemberPermissions = async (userId: string) => {
+  const res = await httpClient.get(`/api/tenant/members/${userId}/permissions`)
 
   return res.data
 }

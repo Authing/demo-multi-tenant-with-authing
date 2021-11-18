@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import { UthingHeader } from '../../components/Header'
 import { getTenantDomain } from '../../utils/getTenantDomain'
 import { getUserInfo } from '../../utils/user'
-import './styles.scss'
+import './styles.less'
 
 export const Home = () => {
   const navigate = useNavigate()

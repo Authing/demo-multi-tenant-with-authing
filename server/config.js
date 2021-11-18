@@ -1,9 +1,9 @@
 module.exports = {
   authing: {
-    userPoolId: '61921541ef0fc4ad5ce39bb0',
-    userPoolSecret: '49f1198965599d3e8dcb3396b11ab2cf',
-    appId: '619215426d9f755a4e62b0ed',
-    appHost: 'https://7a0f74-demo.dev2.authing-inc.co',
+    userPoolId: '6196462b377ced95ee971e03',
+    userPoolSecret: '69e3b33650eb11910980d910c1f54aee',
+    appId: '6196462c64ead43689430b0a',
+    appHost: 'https://tqtfwh-demo.dev2.authing-inc.co',
     topLevelDomain: 'dev2.authing-inc.co',
   },
 }

@@ -5,7 +5,8 @@ import { UploadChangeParam } from 'antd/lib/upload'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { registerTenant, Tenant } from '../../api/tenant'
-import './styles.scss'
+import { config } from '../../config'
+import './styles.less'
 
 export const Register = () => {
   const [logoUrl, setLogoUrl] = useState<string | ArrayBuffer | null>('')
@@ -56,11 +57,11 @@ export const Register = () => {
         message: '创建成功',
       })
 
-      navigate(
-        `/console/dashboard?user_info=${JSON.stringify(
-          userInfo
-        )}&tenant_info=${JSON.stringify(res.data)}`
-      )
+      window.location.href = `${window.location.protocol}//${res.data.domain}.${
+        config.pageBaseHost
+      }/console/dashboard?user_info=${JSON.stringify(
+        userInfo
+      )}&tenant_info=${JSON.stringify(res.data)}`
     } catch (e) {
       console.error(e)
     } finally {

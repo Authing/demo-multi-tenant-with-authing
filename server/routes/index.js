@@ -6,6 +6,7 @@ const {
   fetchTenantUserList,
   fetchTenantDetail,
   removeMember,
+  fetchMemberPermissions,
 } = require('../externalApi/authing')
 var router = express.Router()
 const { authing } = require('../config')
@@ -37,7 +38,7 @@ router.post('/api/tenant', async function (req, res, next) {
     code: 200,
     data: {
       ...tenant,
-      ...tenantMap,
+      ...tenantMap.dataValues,
     },
   })
 })
@@ -45,16 +46,23 @@ router.post('/api/tenant', async function (req, res, next) {
 // 获取租户详情
 router.get('/api/tenant-by-domain', async function (req, res, next) {
   const { domain } = req.query
-  const selfTenant = (await tenantService.findByDomain(domain)).dataValues
+  const selfTenant = (await tenantService.findByDomain(domain))?.dataValues
 
-  const tenantDetail = await fetchTenantDetail(selfTenant.authingTenantId)
+  if (selfTenant) {
+    const tenantDetail = await fetchTenantDetail(selfTenant.authingTenantId)
+
+    res.json({
+      code: 200,
+      data: {
+        ...tenantDetail,
+        ...selfTenant,
+      },
+    })
+  }
 
   res.json({
     code: 200,
-    data: {
-      ...tenantDetail,
-      ...selfTenant,
-    },
+    data: null,
   })
 })
 
@@ -97,13 +105,26 @@ router.get('/api/tenant/:tenantId/users', async function (req, res, next) {
 })
 
 // 删除用户
-router.delete('/api/tenant/members/:userId', async function (req, res, next) {
-  const data = await removeMember(req.params.userId)
+router.delete('/api/tenant/:tenantId/members', async function (req, res, next) {
+  const data = await removeMember(req.params.tenantId, req.query.userId)
 
   res.json({
     code: 200,
     data: data,
   })
 })
+
+// 获取成员权限
+router.get(
+  '/api/tenant/members/:memberId/permissions',
+  async function (req, res, next) {
+    const data = await fetchMemberPermissions(req.params.memberId)
+
+    res.json({
+      code: 200,
+      data: data,
+    })
+  }
+)
 
 module.exports = router

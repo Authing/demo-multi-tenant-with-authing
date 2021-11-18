@@ -33,6 +33,9 @@ export const UthingHeader: FC = ({ children }) => {
           tenantInfo?.logo || require('../../assets/images/logo.png').default
         }
         alt="Logo"
+        style={{
+          borderRadius: 8,
+        }}
       />
       {children}
       {user ? (
