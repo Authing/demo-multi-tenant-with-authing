@@ -7,6 +7,7 @@ const {
   fetchTenantDetail,
   removeMember,
   fetchMemberPermissions,
+  createUser,
 } = require('../externalApi/authing')
 var router = express.Router()
 const { authing } = require('../config')
@@ -126,5 +127,20 @@ router.get(
     })
   }
 )
+
+// 创建用户，并将用户添加至某一个租户
+router.post('/api/tenant/:tenantId/members', async function (req, res, next) {
+  const user = await createUser(req.body)
+
+  await addUserToTenant({
+    userIds: [user.id],
+    tenantId: req.params.tenantId,
+  })
+
+  res.json({
+    code: 200,
+    data: user,
+  })
+})
 
 module.exports = router

@@ -57,3 +57,16 @@ export const fetchMemberPermissions = async (userId: string) => {
 
   return res.data
 }
+
+export const addMember = async (
+  tenantId: string,
+  data: {
+    email: string
+    password: string
+    username: string
+  }
+) => {
+  const res = await httpClient.post(`/api/tenant/${tenantId}/members`, data)
+
+  return res.data
+}

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { removeMember, fetchUsersOfTenant } from '../../../api/tenant'
 import { getTenantInfo } from '../../../utils/tenant'
 import { getUserInfo } from '../../../utils/user'
+import { AddMember } from './AddMember'
 
 const pageSize = 10
 
@@ -12,6 +13,7 @@ export const UserPage = () => {
   const [total, setTotal] = useState(0)
   const [userList, setUserList] = useState<User[]>([])
   const [loading, setLoading] = useState(false)
+  const [visible, setVisible] = useState(false)
   const tenantInfo = getTenantInfo()
   const userInfo = getUserInfo()
 
@@ -46,6 +48,18 @@ export const UserPage = () => {
         height: '100%',
       }}
     >
+      <Button
+        style={{
+          marginBottom: 24,
+          float: 'right',
+        }}
+        type="primary"
+        onClick={() => {
+          setVisible(true)
+        }}
+      >
+        添加成员
+      </Button>
       {tenantInfo?.adminId === userInfo?.id ? (
         <Table
           rowKey="id"
@@ -129,6 +143,15 @@ export const UserPage = () => {
           description="暂无权限"
         />
       )}
+
+      <AddMember
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        onSuccess={() => {
+          setVisible(false)
+          fetchUserList()
+        }}
+      />
     </div>
   )
 }

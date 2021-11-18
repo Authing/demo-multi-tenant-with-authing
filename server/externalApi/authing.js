@@ -93,7 +93,20 @@ async function fetchMemberPermissions(userId) {
   }
 }
 
+// 创建用户
+async function createUser(userInfo) {
+  try {
+    const res = await managementClient.users.create(userInfo)
+
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
 module.exports = {
+  createUser,
   removeMember,
   createTenant,
   addUserToTenant,
