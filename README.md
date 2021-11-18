@@ -14,6 +14,8 @@ topLevelDomain = 'Authing 顶级域名，一般为 authing.cn'
 
 ### 启动后端服务
 
+打开终端，执行
+
 ```
 cd server
 npm i
@@ -21,6 +23,8 @@ npm run start
 ```
 
 ### 启动前端服务
+
+打开另一个终端，执行
 
 ```
 cd client
