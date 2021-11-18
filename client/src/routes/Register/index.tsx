@@ -5,7 +5,6 @@ import { UploadChangeParam } from 'antd/lib/upload'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { registerTenant, Tenant } from '../../api/tenant'
-import { getUserInfo } from '../../utils/user'
 import './styles.scss'
 
 export const Register = () => {
@@ -14,6 +13,9 @@ export const Register = () => {
   const [submitting, setSubmitting] = useState(false)
   const [form] = useForm()
   const navigate = useNavigate()
+  const userInfo = JSON.parse(
+    new URL(window.location.href).searchParams.get('user_info') || 'null'
+  )
 
   const handleChange = (info: UploadChangeParam) => {
     if (info.file.status === 'uploading') {
@@ -44,17 +46,21 @@ export const Register = () => {
     setSubmitting(true)
 
     try {
-      await registerTenant({
+      const res = await registerTenant({
         ...values,
         logo: logoUrl as string,
-        adminId: getUserInfo()!.id,
+        adminId: userInfo!.id,
       })
 
       notification.success({
         message: '创建成功',
       })
 
-      navigate('/console/dashboard')
+      navigate(
+        `/console/dashboard?user_info=${JSON.stringify(
+          userInfo
+        )}&tenant_info=${JSON.stringify(res.data)}`
+      )
     } catch (e) {
       console.error(e)
     } finally {

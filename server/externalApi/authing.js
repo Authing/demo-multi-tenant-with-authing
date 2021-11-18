@@ -1,128 +1,77 @@
-const axios = require('axios').default
+const { ManagementClient } = require('authing-js-sdk')
 const { authing } = require('../config')
 
-const httpClient = axios.create()
+const managementClient = new ManagementClient({
+  userPoolId: authing.userPoolId,
+  secret: authing.userPoolSecret,
+  host: authing.appHost,
+})
 
-async function fetchManagementToken(userPoolId, secret) {
-  const res = await httpClient.post(
-    `https://core.${authing.topLevelDomain}/graphql/v2`,
-    {
-      query: `
-    query accessToken($userPoolId: String!, $secret: String!) {
-  accessToken(userPoolId: $userPoolId, secret: $secret) {
-    accessToken
-    exp
-    iat
-  }
-}
-    `,
-      variables: {
-        userPoolId,
-        secret,
-      },
-    }
-  )
-
-  return res.data.data.accessToken.accessToken
-}
-
-async function createTenant(token, tenantInfo) {
+// 创建租户
+async function createTenant(tenantInfo) {
   try {
-    const res = await httpClient.post(
-      `${authing.appHost}/api/v2/tenant`,
-      tenantInfo,
-      {
-        headers: {
-          'x-authing-userpool-id': authing.userPoolId,
-          Authorization: token,
-        },
-      }
-    )
+    const res = await managementClient.tenant.add(tenantInfo)
 
-    return res.data.data
-  } catch (e) {
-    console.log(e)
-    return null
-  }
-}
-
-async function fetchUserTenants(token, id) {
-  try {
-    const res = await httpClient.get(
-      `${authing.appHost}/api/v2/users/${id}/tenants`,
-      {
-        headers: {
-          'x-authing-userpool-id': authing.userPoolId,
-          Authorization: token,
-        },
-      }
-    )
-
-    return res.data.data.tenants
+    return res
   } catch (e) {
     console.log(e, '>>>>')
     return null
   }
 }
 
-async function addUserToTenant(token, { userIds, tenantId }) {
+// 获取某一个用户所在租户列表
+async function fetchUserTenants(id) {
   try {
-    const res = await httpClient.post(
-      `${authing.appHost}/api/v2/tenant/${tenantId}/user`,
-      {
-        userIds,
-      },
-      {
-        headers: {
-          'x-authing-userpool-id': authing.userPoolId,
-          Authorization: token,
-        },
-      }
-    )
-
-    return res.data.data
+    const { tenants } = await managementClient.users.getUserTenants(id)
+    return tenants
   } catch (e) {
     console.log(e, '>>>>')
     return null
   }
 }
 
-async function fetchTenantUserList(token, { tenantId, page = 1, limit = 10 }) {
+// 将用户添加至某一个租户
+async function addUserToTenant({ userIds, tenantId }) {
   try {
-    const res = await httpClient.get(
-      `${authing.appHost}/api/v2/tenant/${tenantId}/users`,
-      {
-        params: {
-          page,
-          limit,
-        },
-        headers: {
-          'x-authing-userpool-id': authing.userPoolId,
-          Authorization: token,
-        },
-      }
-    )
+    const res = await managementClient.tenant.addMembers(tenantId, userIds)
 
-    return res.data.data
+    return res
   } catch (e) {
     console.log(e, '>>>>')
     return null
   }
 }
 
-async function fetchTenantDetail(token, tenantId) {
+// 获取某一个租户下的用户列表
+async function fetchTenantUserList({ tenantId, page = 1, limit = 10 }) {
   try {
-    const res = await httpClient.get(
-      `${authing.appHost}/api/v2/tenant/${tenantId}`,
-      {
-        headers: {
-          'x-authing-userpool-id': authing.userPoolId,
-          Authorization: token,
-        },
-      }
-    )
+    const res = await managementClient.tenant.members(tenantId, page, limit)
 
-    return res.data.data
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
+// 获取租户详情
+async function fetchTenantDetail(tenantId) {
+  try {
+    const res = await managementClient.tenant.details(tenantId)
+
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
+// 移除租户成员
+async function deleteUser(userId) {
+  try {
+    const res = await managementClient.users.delete(userId)
+
+    return res
   } catch (e) {
     console.log(e, '>>>>')
     return null
@@ -130,10 +79,10 @@ async function fetchTenantDetail(token, tenantId) {
 }
 
 module.exports = {
+  deleteUser,
   createTenant,
   addUserToTenant,
   fetchUserTenants,
   fetchTenantDetail,
   fetchTenantUserList,
-  fetchManagementToken,
 }

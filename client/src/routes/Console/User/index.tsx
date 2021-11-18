@@ -1,7 +1,7 @@
 import { User } from '@authing/react-ui-components'
-import { Avatar, Empty, Table } from 'antd'
-import { useEffect, useState } from 'react'
-import { fetchUsersOfTenant } from '../../../api/tenant'
+import { Modal, Avatar, Empty, Table, Button, notification } from 'antd'
+import { useCallback, useEffect, useState } from 'react'
+import { removeMember, fetchUsersOfTenant } from '../../../api/tenant'
 import { getTenantInfo } from '../../../utils/tenant'
 import { getUserInfo } from '../../../utils/user'
 
@@ -15,7 +15,7 @@ export const UserPage = () => {
   const tenantInfo = getTenantInfo()
   const userInfo = getUserInfo()
 
-  useEffect(() => {
+  const fetchUserList = useCallback(async () => {
     const tenantInfo = getTenantInfo()
     if (tenantInfo) {
       setLoading(true)
@@ -32,6 +32,10 @@ export const UserPage = () => {
         })
     }
   }, [page])
+
+  useEffect(() => {
+    fetchUserList()
+  }, [fetchUserList])
 
   return (
     <div
@@ -81,6 +85,35 @@ export const UserPage = () => {
               dataIndex: 'phone',
               render(value, record) {
                 return value || '--'
+              },
+            },
+            {
+              title: '操作',
+              dataIndex: 'id',
+              render(value) {
+                return (
+                  <Button
+                    // 不能删除自己或管理员账号
+                    disabled={[tenantInfo?.adminId, userInfo?.id].includes(
+                      value
+                    )}
+                    danger
+                    onClick={() => {
+                      Modal.confirm({
+                        title: '确认移除该成员？',
+                        onOk: async () => {
+                          await removeMember(value)
+                          notification.success({
+                            message: '移除成功',
+                          })
+                          fetchUserList()
+                        },
+                      })
+                    }}
+                  >
+                    移除
+                  </Button>
+                )
               },
             },
           ]}

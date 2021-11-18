@@ -1,9 +1,9 @@
-import { Guard } from '@authing/react-ui-components'
+import { Guard as AuthingGuard } from '@authing/react-ui-components'
 import { Spin } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { fetchTenantByDomain, Tenant } from '../../api/tenant'
-import { APP_ID } from '../../constants/authing'
+import { APP_HOST, APP_ID, CORE_API_HOST } from '../../constants/authing'
 import { getTenantDomain } from '../../utils/getTenantDomain'
 import { getUserInfo } from '../../utils/user'
 import './styles.scss'
@@ -58,11 +58,16 @@ export const Login = () => {
           <Spin spinning={loading}></Spin>
         </div>
       ) : (
-        <Guard
+        <AuthingGuard
           appId={APP_ID}
           tenantId={tenantInfo?.authingTenantId}
-          config={{}}
+          config={{
+            host: CORE_API_HOST,
+            // appHost: APP_HOST,
+          }}
+          // @ts-ignore
           onLogin={async (user) => {
+            console.log(user, '>>>>>>>>>>>>')
             if (tenantInfo) {
               navigate(
                 `/console/dashboard?user_info=${JSON.stringify(

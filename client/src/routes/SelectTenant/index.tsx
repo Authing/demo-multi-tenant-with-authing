@@ -48,7 +48,10 @@ export const SelectTenant = () => {
                   lineHeight: '32px',
                 }}
               >
-                <Button type="primary" onClick={() => navigate('/register')}>
+                <Button
+                  type="primary"
+                  onClick={() => navigate(`/register${window.location.search}`)}
+                >
                   去创建
                 </Button>
               </div>
@@ -75,7 +78,8 @@ export const SelectTenant = () => {
           />
         ) : (
           <p>
-            暂无组织，<Link to={'/register'}>去创建</Link>
+            暂无组织，
+            <Link to={`/register${window.location.search}`}>去创建</Link>
           </p>
         )}
       </Spin>

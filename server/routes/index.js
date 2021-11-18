@@ -1,11 +1,11 @@
 var express = require('express')
 const {
-  fetchManagementToken,
   createTenant,
   fetchUserTenants,
   addUserToTenant,
   fetchTenantUserList,
   fetchTenantDetail,
+  removeMember,
 } = require('../externalApi/authing')
 var router = express.Router()
 const { authing } = require('../config')
@@ -14,28 +14,17 @@ const { keyBy } = require('lodash')
 
 // 创建租户
 router.post('/api/tenant', async function (req, res, next) {
-  const accessToken = await fetchManagementToken(
-    authing.userPoolId,
-    authing.userPoolSecret
-  )
-
   const { name, logo, domain, description, adminId } = req.body
-  const tenant = await createTenant(accessToken, {
+  const tenant = await createTenant({
     appIds: authing.appId,
     name,
     logo,
     description,
   })
 
-  await addUserToTenant(accessToken, {
+  await addUserToTenant({
     userIds: [adminId],
     tenantId: tenant.id,
-  })
-
-  console.log({
-    authingTenantId: tenant.id,
-    domain,
-    adminId,
   })
 
   const tenantMap = await tenantService.insert({
@@ -46,7 +35,10 @@ router.post('/api/tenant', async function (req, res, next) {
 
   res.json({
     code: 200,
-    data: tenantMap,
+    data: {
+      ...tenant,
+      ...tenantMap,
+    },
   })
 })
 
@@ -55,15 +47,7 @@ router.get('/api/tenant-by-domain', async function (req, res, next) {
   const { domain } = req.query
   const selfTenant = (await tenantService.findByDomain(domain)).dataValues
 
-  const accessToken = await fetchManagementToken(
-    authing.userPoolId,
-    authing.userPoolSecret
-  )
-
-  const tenantDetail = await fetchTenantDetail(
-    accessToken,
-    selfTenant.authingTenantId
-  )
+  const tenantDetail = await fetchTenantDetail(selfTenant.authingTenantId)
 
   res.json({
     code: 200,
@@ -76,14 +60,9 @@ router.get('/api/tenant-by-domain', async function (req, res, next) {
 
 // 获取用户所在租户列表
 router.get('/api/user/tenant', async function (req, res, next) {
-  const accessToken = await fetchManagementToken(
-    authing.userPoolId,
-    authing.userPoolSecret
-  )
-
   const { userId } = req.query
 
-  const list = (await fetchUserTenants(accessToken, userId)) || []
+  const list = (await fetchUserTenants(userId)) || []
   const ids = list.map((item) => item.id)
   const tenantMaps = keyBy(
     await tenantService.findByAuthingIds(ids),
@@ -105,16 +84,21 @@ router.get('/api/user/tenant', async function (req, res, next) {
 
 // 获取租户下的成员列表
 router.get('/api/tenant/:tenantId/users', async function (req, res, next) {
-  const accessToken = await fetchManagementToken(
-    authing.userPoolId,
-    authing.userPoolSecret
-  )
-
-  const data = await fetchTenantUserList(accessToken, {
+  const data = await fetchTenantUserList({
     tenantId: req.params.tenantId,
     page: req.query.page,
     limit: req.query.limit,
   })
+
+  res.json({
+    code: 200,
+    data: data,
+  })
+})
+
+// 删除用户
+router.delete('/api/tenant/members/:userId', async function (req, res, next) {
+  const data = await removeMember(req.params.userId)
 
   res.json({
     code: 200,

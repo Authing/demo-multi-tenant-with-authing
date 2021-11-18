@@ -41,13 +41,13 @@
   resolved "https://registry.nlark.com/@authing/jose/download/@authing/jose-1.0.5.tgz#d3e9c58aac74f47e5048a791d69c68f8bc52d7d8"
   integrity sha1-0+nFiqx09H5QSKeR1pxo+LxS19g=
 
-"@authing/react-ui-components@^3.0.2-Beta.0":
-  version "3.0.2-Beta.0"
-  resolved "https://registry.npmmirror.com/@authing/react-ui-components/download/@authing/react-ui-components-3.0.2-Beta.0.tgz#57bd4f89299c41785fd2cd75ef802cecbd926bcd"
-  integrity sha512-ZxzJCJ3QyHwP0gGkLPJJT+Furpfms8QDvAFGzmsAeBgpcnAQYTbL3/yUSeSeM/wrL7vDAxMepITaRr9UOpoSww==
+"@authing/react-ui-components@3.0.2-beta.3":
+  version "3.0.2-beta.3"
+  resolved "https://registry.npmmirror.com/@authing/react-ui-components/download/@authing/react-ui-components-3.0.2-beta.3.tgz#3f75d3f47a7a2ac49f0fd119d7fdef01fd92d4e8"
+  integrity sha512-Y/eWyUoHW37npMJl+B42ikEtS72oW5Q5qh0g/yosre/6zK2frvefWRpb+aRcQDQWa+fXJ1Q/plnoxDlj7d5u0w==
   dependencies:
     antd "^4.8.0"
-    authing-js-sdk "4.22.24-alpha"
+    authing-js-sdk "4.22.26-alpha.2"
     face-api.js "^0.22.2"
     global "^4.4.0"
     qs "^6.9.4"
@@ -2824,10 +2824,10 @@ atob@^2.1.2:
   resolved "https://registry.npmmirror.com/atob/download/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha1-bZUX654DDSQ2ZmZR6GvZ9vE1M8k=
 
-authing-js-sdk@4.22.24-alpha:
-  version "4.22.24-alpha"
-  resolved "https://registry.npmmirror.com/authing-js-sdk/download/authing-js-sdk-4.22.24-alpha.tgz?cache=0&sync_timestamp=1637130333113&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fauthing-js-sdk%2Fdownload%2Fauthing-js-sdk-4.22.24-alpha.tgz#299ac8e74ccf2baf4a6286e7f5350a603653a411"
-  integrity sha512-e+cIvsXrHSDHmZIaPG9/snNZu12loPTNJEeIn+Q09BDIzIJJFmQ53DAzq+uUQNA+gQ24QmnJTbzUf/Ue8J6kKA==
+authing-js-sdk@4.22.26-alpha.2:
+  version "4.22.26-alpha.2"
+  resolved "https://registry.npmmirror.com/authing-js-sdk/download/authing-js-sdk-4.22.26-alpha.2.tgz#4c05b5d0bcd1d61cd0e0964a4d3685bbf5151599"
+  integrity sha512-a0qUqYbB6meYjRvdzzpKKYY7V9rxLH4r7Abh+f/5iGbAMut96/Pyc577BvuR2D8x/jUPfAvnvzX+6R2ma5l4+A==
   dependencies:
     "@authing/jose" "^1.0.3"
     axios "^0.19.2"
@@ -4305,7 +4305,7 @@ cssstyle@^2.3.0:
 
 csstype@^3.0.2, csstype@^3.0.6:
   version "3.0.10"
-  resolved "https://registry.npmmirror.com/csstype/download/csstype-3.0.10.tgz#2ad3a7bed70f35b965707c092e5f30b327c290e5"
+  resolved "https://registry.npmmirror.com/csstype/download/csstype-3.0.10.tgz?cache=0&sync_timestamp=1636974960693&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fcsstype%2Fdownload%2Fcsstype-3.0.10.tgz#2ad3a7bed70f35b965707c092e5f30b327c290e5"
   integrity sha512-2u44ZG2OcNUO9HDp/Jl8C07x6pU/eTR3ncV91SiK3dhG9TWvRVsCoJw14Ckx5DgWkzGA3waZWO3d7pgqpUI/XA==
 
 cyclist@^1.0.1:
@@ -11331,7 +11331,7 @@ source-map@^0.7.3, source-map@~0.7.2:
 
 sourcemap-codec@^1.4.4, sourcemap-codec@^1.4.8:
   version "1.4.8"
-  resolved "https://registry.npmmirror.com/sourcemap-codec/download/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
+  resolved "https://registry.nlark.com/sourcemap-codec/download/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
   integrity sha1-6oBL2UhXQC5pktBaOO8a41qatMQ=
 
 spdx-correct@^3.0.0:
@@ -12047,12 +12047,12 @@ tsconfig-paths@^3.11.0:
 
 tslib@^1.11.1, tslib@^1.8.1:
   version "1.14.1"
-  resolved "https://registry.npmmirror.com/tslib/download/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
+  resolved "https://registry.nlark.com/tslib/download/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha1-zy04vcNKE0vK8QkcQfZhni9nLQA=
 
 tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0:
   version "2.3.1"
-  resolved "https://registry.npmmirror.com/tslib/download/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
+  resolved "https://registry.nlark.com/tslib/download/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha1-6KM1rdXOrlGqJh0ypJAVjvBC7wE=
 
 tsutils@^3.17.1, tsutils@^3.21.0:
