@@ -10,7 +10,7 @@ const managementClient = new ManagementClient({
 // 创建租户
 async function createTenant(tenantInfo) {
   try {
-    const res = await managementClient.tenant.add(tenantInfo)
+    const res = await managementClient.tenant.create(tenantInfo)
 
     return res
   } catch (e) {
@@ -45,7 +45,7 @@ async function addUserToTenant({ userIds, tenantId }) {
 // 获取某一个租户下的用户列表
 async function fetchTenantUserList({ tenantId, page = 1, limit = 10 }) {
   try {
-    const res = await managementClient.tenant.members(tenantId, page, limit)
+    const res = await managementClient.tenant.members(tenantId, { page, limit })
 
     return res
   } catch (e) {
