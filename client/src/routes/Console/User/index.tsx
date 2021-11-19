@@ -45,18 +45,34 @@ export const UserPage = () => {
         height: '100%',
       }}
     >
-      <Button
+      <div
         style={{
-          marginBottom: 24,
-          float: 'right',
-        }}
-        type="primary"
-        onClick={() => {
-          setVisible(true)
+          marginBottom: 20,
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
-        添加成员
-      </Button>
+        <h3
+          style={{
+            fontSize: 16,
+            fontWeight: 'bold',
+            marginBottom: 0,
+          }}
+        >
+          成员管理
+        </h3>
+        <Button
+          style={{
+            marginLeft: 'auto',
+          }}
+          type="primary"
+          onClick={() => {
+            setVisible(true)
+          }}
+        >
+          添加成员
+        </Button>
+      </div>
       {tenantInfo?.adminId === userInfo?.id ? (
         <Table
           rowKey="id"

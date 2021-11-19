@@ -32,7 +32,7 @@ const menus = [
   {
     key: 'user',
     icon: <TeamOutlined />,
-    title: '用户管理',
+    title: '成员管理',
     path: '/console/user',
   },
   {

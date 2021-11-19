@@ -76,11 +76,8 @@ export const Register = () => {
         centered
         okButtonProps={{
           loading: submitting,
-          size: 'large',
         }}
-        cancelButtonProps={{
-          size: 'large',
-        }}
+        cancelButtonProps={{}}
         onOk={() => form.submit()}
         onCancel={() => navigate(-1)}
         visible
@@ -95,6 +92,7 @@ export const Register = () => {
           onFinish={onFinish}
           className="register-form"
           form={form}
+          layout="vertical"
         >
           <Form.Item required label="企业 Logo">
             <Upload
@@ -129,7 +127,7 @@ export const Register = () => {
             name="name"
             label="企业名称"
           >
-            <Input size="large" placeholder="名称"></Input>
+            <Input placeholder="名称"></Input>
           </Form.Item>
           <Form.Item
             rules={[
@@ -141,16 +139,15 @@ export const Register = () => {
             label="企业域名"
           >
             <Input
-              size="large"
               placeholder="域名"
               addonBefore={`${window.location.protocol}//`}
-              addonAfter={`${window.location.host}`}
+              addonAfter={`.${window.location.host}`}
             ></Input>
           </Form.Item>
           <Form.Item name="description" label="企业描述">
             <Input.TextArea placeholder="企业描述" />
           </Form.Item>
-          <Button hidden htmlType="submit" size="large" type="primary">
+          <Button hidden htmlType="submit" type="primary">
             提交
           </Button>
         </Form>
