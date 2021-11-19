@@ -14,14 +14,13 @@ import {
   useNavigate,
 } from 'react-router'
 import { UthingHeader } from '../../components/Header'
-import { useEffect, useMemo } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import './styles.less'
 import { Setting } from './Setting'
 import { UserPage } from './User'
-import { getTenantInfo, setTenantInfo } from '../../utils/tenant'
-import { getUserInfo, setUserInfo } from '../../utils/user'
 import { Tenant } from './Tenant'
 import { Permission } from './Permission'
+import { GlobalContext, IGlobalContext } from '../../context/globalContext'
 
 const menus = [
   {
@@ -60,6 +59,8 @@ export const ConsolePage = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
+  const { user, tenant } = useContext<IGlobalContext>(GlobalContext)
+
   const selectedKeys = useMemo(() => {
     return menus
       .filter((item) => matchPath(item.path, location.pathname))
@@ -67,20 +68,18 @@ export const ConsolePage = () => {
   }, [location.pathname])
 
   useEffect(() => {
-    const url = new URL(window.location.href)
-
-    const userInfo = JSON.parse(url.searchParams.get('user_info') || 'null')
-    const tenantInfo = JSON.parse(url.searchParams.get('tenant_info') || 'null')
-
-    if (userInfo && tenantInfo) {
-      setTenantInfo(tenantInfo)
-      setUserInfo(userInfo)
-    } else if (!getTenantInfo() || !getUserInfo()) {
+    if (!user) {
       navigate('/login')
     }
-  }, [navigate])
 
-  return (
+    if (!tenant) {
+      navigate('/select-tenant')
+    }
+  }, [navigate, tenant, user])
+
+  return !user || !tenant ? (
+    <></>
+  ) : (
     <Layout
       className="console-page"
       style={{

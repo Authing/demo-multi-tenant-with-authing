@@ -1,8 +1,8 @@
 import { Modal, Form, Input } from 'antd'
 import { useForm } from 'antd/es/form/Form'
-import { FC, useEffect, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
+import { GlobalContext } from '../../../context/globalContext'
 import { addMember } from '../../../api/tenant'
-import { getTenantInfo } from '../../../utils/tenant'
 
 export const AddMember: FC<{
   visible: boolean
@@ -11,6 +11,7 @@ export const AddMember: FC<{
 }> = ({ visible, onCancel, onSuccess }) => {
   const [form] = useForm()
   const [loading, setLoading] = useState(false)
+  const { tenant: tenantInfo } = useContext(GlobalContext)
 
   useEffect(() => {
     if (visible) {
@@ -32,7 +33,7 @@ export const AddMember: FC<{
         onFinish={async (values) => {
           setLoading(true)
           try {
-            await addMember(getTenantInfo()!.authingTenantId, {
+            await addMember(tenantInfo!.authingTenantId, {
               username: values.username,
               email: values.email,
               password: values.password,

@@ -16,7 +16,8 @@ const { keyBy } = require('lodash')
 
 // 创建租户
 router.post('/api/tenant', async function (req, res, next) {
-  const { name, logo, domain, description, adminId } = req.body
+  const adminId = req.user.id
+  const { name, logo, domain, description } = req.body
   const tenant = await createTenant({
     appIds: authing.appId,
     name,
@@ -35,7 +36,7 @@ router.post('/api/tenant', async function (req, res, next) {
     adminId,
   })
 
-  res.json({
+  return res.json({
     code: 200,
     data: {
       ...tenant,
@@ -52,7 +53,7 @@ router.get('/api/tenant-by-domain', async function (req, res, next) {
   if (selfTenant) {
     const tenantDetail = await fetchTenantDetail(selfTenant.authingTenantId)
 
-    res.json({
+    return res.json({
       code: 200,
       data: {
         ...tenantDetail,
@@ -61,7 +62,7 @@ router.get('/api/tenant-by-domain', async function (req, res, next) {
     })
   }
 
-  res.json({
+  return res.json({
     code: 200,
     data: null,
   })
@@ -78,7 +79,7 @@ router.get('/api/user/tenant', async function (req, res, next) {
     'authingTenantId'
   )
 
-  res.json({
+  return res.json({
     code: 200,
     data: list
       ?.map((item) => ({
@@ -99,7 +100,7 @@ router.get('/api/tenant/:tenantId/users', async function (req, res, next) {
     limit: req.query.limit,
   })
 
-  res.json({
+  return res.json({
     code: 200,
     data: data,
   })
@@ -109,7 +110,7 @@ router.get('/api/tenant/:tenantId/users', async function (req, res, next) {
 router.delete('/api/tenant/:tenantId/members', async function (req, res, next) {
   const data = await removeMember(req.params.tenantId, req.query.userId)
 
-  res.json({
+  return res.json({
     code: 200,
     data: data,
   })
@@ -121,7 +122,7 @@ router.get(
   async function (req, res, next) {
     const data = await fetchMemberPermissions(req.params.memberId)
 
-    res.json({
+    return res.json({
       code: 200,
       data: data,
     })
@@ -137,9 +138,17 @@ router.post('/api/tenant/:tenantId/members', async function (req, res, next) {
     tenantId: req.params.tenantId,
   })
 
-  res.json({
+  return res.json({
     code: 200,
     data: user,
+  })
+})
+
+// 获取当前登录的用户信息
+router.get('/api/user/me', async function (req, res, next) {
+  return res.json({
+    code: 200,
+    data: req.user,
   })
 })
 

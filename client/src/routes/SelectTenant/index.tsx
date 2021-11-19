@@ -2,28 +2,34 @@ import { Modal, Spin, List, Avatar, Button } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { fetchUserTenantList, Tenant } from '../../api/tenant'
+import { getCurrentUser } from '../../api/user'
 import { config } from '../../config'
 
 export const SelectTenant = () => {
   const [loading, setLoading] = useState(false)
   const [tenantList, setTenantList] = useState<Tenant[] | null>([])
   const navigate = useNavigate()
-  const userInfo = useMemo(() => {
+  const token = useMemo(() => {
     const url = new URL(window.location.href)
-    return JSON.parse(url.searchParams.get('user_info') || 'null')
+    return url.searchParams.get('token')
   }, [])
 
   useEffect(() => {
     setLoading(true)
 
-    if (userInfo) {
-      fetchUserTenantList(userInfo.id)
-        .then((res) => {
+    if (!token) {
+      navigate('/login')
+      return
+    }
+
+    getCurrentUser(token)
+      .then(async (res) => {
+        return fetchUserTenantList(res.data.id).then((res) => {
           setTenantList(res.data as Tenant[])
         })
-        .finally(() => setLoading(false))
-    }
-  }, [userInfo])
+      })
+      .finally(() => setLoading(false))
+  }, [navigate, token])
 
   return (
     <Modal
@@ -62,11 +68,7 @@ export const SelectTenant = () => {
                   avatar={<Avatar src={tenant.logo} />}
                   title={
                     <a
-                      href={`${window.location.protocol}//${tenant.domain}.${
-                        config.pageBaseHost
-                      }/console/dashboard?user_info=${JSON.stringify(
-                        userInfo
-                      )}&tenant_info=${JSON.stringify(tenant)}`}
+                      href={`${window.location.protocol}//${tenant.domain}.${config.pageBaseHost}/token-set?token=${token}`}
                     >
                       {tenant.name}
                     </a>

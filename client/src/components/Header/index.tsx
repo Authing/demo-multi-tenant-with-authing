@@ -1,21 +1,12 @@
-import { User } from '@authing/react-ui-components'
 import { Avatar, Button, Dropdown, Layout, Menu } from 'antd'
-import { FC, useState } from 'react'
+import { FC, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Tenant } from '../../api/tenant'
-import { useGlobalEventBus } from '../../utils/globalEventBus'
-import { clearTenantInfo, getTenantInfo } from '../../utils/tenant'
-import { clearUserInfo, getUserInfo } from '../../utils/user'
+import { GlobalContext } from '../../context/globalContext'
 
 export const UthingHeader: FC = ({ children }) => {
   const navigate = useNavigate()
-  const [user, setUser] = useState<User | null>(getUserInfo())
-  const [tenantInfo, setTenantInfo] = useState<Tenant | null>(getTenantInfo())
 
-  useGlobalEventBus('update-user-or-tenant-info', () => {
-    setUser(getUserInfo())
-    setTenantInfo(getTenantInfo())
-  })
+  const { user, tenant: tenantInfo } = useContext(GlobalContext)
 
   return (
     <Layout.Header
@@ -61,8 +52,7 @@ export const UthingHeader: FC = ({ children }) => {
                 <Menu.Item
                   key="logout"
                   onClick={() => {
-                    clearUserInfo()
-                    clearTenantInfo()
+                    localStorage.removeItem('authorization_token')
                     navigate('/login')
                   }}
                 >

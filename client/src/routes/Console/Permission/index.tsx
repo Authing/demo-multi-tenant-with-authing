@@ -1,18 +1,17 @@
 import { Descriptions, Tag } from 'antd'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { GlobalContext } from '../../../context/globalContext'
 import { fetchMemberPermissions } from '../../../api/tenant'
-import { getUserInfo } from '../../../utils/user'
 
 export const Permission = () => {
   const [permissions, setPermissions] = useState<string[]>([])
+  const { user } = useContext(GlobalContext)
 
   useEffect(() => {
-    const userInfo = getUserInfo()
-
-    if (!userInfo) {
+    if (!user) {
       return
     }
-    fetchMemberPermissions(userInfo.id).then((res) => {
+    fetchMemberPermissions(user.id).then((res) => {
       setPermissions(
         res.data.list
           .map((item: any) => {
@@ -21,7 +20,7 @@ export const Permission = () => {
           .flat()
       )
     })
-  }, [])
+  }, [user])
 
   return (
     <div

@@ -1,23 +1,24 @@
 import { Layout } from 'antd'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import { GlobalContext } from '../../context/globalContext'
 import { UthingHeader } from '../../components/Header'
 import { getTenantDomain } from '../../utils/getTenantDomain'
-import { getUserInfo } from '../../utils/user'
 import './styles.less'
 
 export const Home = () => {
   const navigate = useNavigate()
+  const { user } = useContext(GlobalContext)
 
   useEffect(() => {
     if (getTenantDomain()) {
-      if (getUserInfo()) {
+      if (user) {
         navigate('/console/dashboard')
       } else {
         navigate('/login')
       }
     }
-  }, [navigate])
+  }, [navigate, user])
 
   return (
     <Layout className="home-page">

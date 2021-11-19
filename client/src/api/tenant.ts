@@ -9,8 +9,14 @@ export interface Tenant {
   description?: string
 }
 
-export const registerTenant = async (tenant: Tenant) => {
-  const res = await httpClient.post(`/api/tenant`, tenant)
+export const registerTenant = async (tenant: Tenant, token?: string) => {
+  const res = await httpClient.post(`/api/tenant`, tenant, {
+    headers: token
+      ? {
+          Authorization: `Bearer ${token}`,
+        }
+      : {},
+  })
 
   return res.data
 }

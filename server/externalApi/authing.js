@@ -105,10 +105,23 @@ async function createUser(userInfo) {
   }
 }
 
+// 获取用户详情
+async function getUserDetail(id) {
+  try {
+    const res = await managementClient.users.detail(id)
+
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
 module.exports = {
   createUser,
   removeMember,
   createTenant,
+  getUserDetail,
   addUserToTenant,
   fetchUserTenants,
   fetchTenantDetail,

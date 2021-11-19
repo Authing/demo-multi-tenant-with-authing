@@ -1,9 +1,8 @@
 import { User } from '@authing/react-ui-components'
 import { Modal, Avatar, Empty, Table, Button, notification } from 'antd'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { GlobalContext } from '../../../context/globalContext'
 import { removeMember, fetchUsersOfTenant } from '../../../api/tenant'
-import { getTenantInfo } from '../../../utils/tenant'
-import { getUserInfo } from '../../../utils/user'
 import { AddMember } from './AddMember'
 
 const pageSize = 10
@@ -14,11 +13,9 @@ export const UserPage = () => {
   const [userList, setUserList] = useState<User[]>([])
   const [loading, setLoading] = useState(false)
   const [visible, setVisible] = useState(false)
-  const tenantInfo = getTenantInfo()
-  const userInfo = getUserInfo()
+  const { user: userInfo, tenant: tenantInfo } = useContext(GlobalContext)
 
   const fetchUserList = useCallback(async () => {
-    const tenantInfo = getTenantInfo()
     if (tenantInfo) {
       setLoading(true)
       fetchUsersOfTenant(tenantInfo.authingTenantId, {
@@ -33,7 +30,7 @@ export const UserPage = () => {
           setLoading(false)
         })
     }
-  }, [page])
+  }, [page, tenantInfo])
 
   useEffect(() => {
     fetchUserList()

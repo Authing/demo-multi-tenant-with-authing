@@ -14,9 +14,11 @@ export const Register = () => {
   const [submitting, setSubmitting] = useState(false)
   const [form] = useForm()
   const navigate = useNavigate()
-  const userInfo = JSON.parse(
-    new URL(window.location.href).searchParams.get('user_info') || 'null'
-  )
+  const token = new URL(window.location.href).searchParams.get('token')
+
+  if (!token) {
+    navigate('/login')
+  }
 
   const handleChange = (info: UploadChangeParam) => {
     if (info.file.status === 'uploading') {
@@ -47,21 +49,19 @@ export const Register = () => {
     setSubmitting(true)
 
     try {
-      const res = await registerTenant({
-        ...values,
-        logo: logoUrl as string,
-        adminId: userInfo!.id,
-      })
+      const res = await registerTenant(
+        {
+          ...values,
+          logo: logoUrl as string,
+        },
+        token as string
+      )
 
       notification.success({
         message: '创建成功',
       })
 
-      window.location.href = `${window.location.protocol}//${res.data.domain}.${
-        config.pageBaseHost
-      }/console/dashboard?user_info=${JSON.stringify(
-        userInfo
-      )}&tenant_info=${JSON.stringify(res.data)}`
+      window.location.href = `${window.location.protocol}//${res.data.domain}.${config.pageBaseHost}/token-set?token=${token}`
     } catch (e) {
       console.error(e)
     } finally {
