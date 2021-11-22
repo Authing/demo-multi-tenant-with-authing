@@ -153,7 +153,7 @@ export const UserPage = () => {
           style={{
             marginTop: 100,
           }}
-          description="暂无权限"
+          description="暂无权限查看"
         />
       )}
 

@@ -1,4 +1,4 @@
-import { Descriptions, Tag } from 'antd'
+import { Descriptions, Empty, Tag } from 'antd'
 import { useContext, useEffect, useState } from 'react'
 import { GlobalContext } from '../../../context/globalContext'
 import { fetchMemberPermissions } from '../../../api/tenant'
@@ -33,13 +33,17 @@ export const Permission = () => {
     >
       <Descriptions bordered title="权限信息" layout="vertical">
         <Descriptions.Item label="所有权限">
-          {permissions.map((item) => {
-            return (
-              <Tag color="green" key={item}>
-                {item}
-              </Tag>
-            )
-          })}
+          {permissions?.length ? (
+            permissions.map((item) => {
+              return (
+                <Tag color="green" key={item}>
+                  {item}
+                </Tag>
+              )
+            })
+          ) : (
+            <Empty description="无权限信息" />
+          )}
         </Descriptions.Item>
       </Descriptions>
     </div>
