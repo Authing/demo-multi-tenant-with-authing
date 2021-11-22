@@ -76,7 +76,7 @@ export const UthingHeader: FC = ({ children }) => {
               lineHeight: '1',
             }}
           >
-            <div>{user?.name || '--'}</div>
+            <div>{user?.username || '--'}</div>
             <div
               style={{
                 color: '#8a92a6',

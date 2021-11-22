@@ -1,9 +1,11 @@
-import { Modal, Spin, List, Avatar, Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { fetchUserTenantList, Tenant } from '../../api/tenant'
 import { getCurrentUser } from '../../api/user'
-import { config } from '../../config'
+import './styles.less'
+import { TenantCard } from './TenantCard'
 
 export const SelectTenant = () => {
   const [loading, setLoading] = useState(false)
@@ -32,59 +34,67 @@ export const SelectTenant = () => {
   }, [navigate, token])
 
   return (
-    <Modal
-      centered
-      footer={null}
-      visible
-      mask={false}
-      closable={false}
-      width={500}
-    >
-      <Spin spinning={loading}>
-        {tenantList?.length ? (
-          <List
-            itemLayout="horizontal"
-            dataSource={tenantList}
-            loadMore={
+    <>
+      <div className="tenant-page">
+        <header
+          style={{
+            paddingTop: '16px',
+          }}
+        >
+          <img
+            height="40px"
+            src={require('../../assets/images/logo.png').default}
+            alt="Logo"
+            style={{
+              borderRadius: 8,
+            }}
+          />
+        </header>
+        <h1
+          style={{
+            fontSize: 24,
+            marginTop: 82,
+            marginBottom: 32,
+          }}
+        >
+          选择企业
+        </h1>
+        <Spin spinning={loading}>
+          <div className="tenant-list-container">
+            <div
+              onClick={() => navigate(`/register${window.location.search}`)}
+              className="tenant-card"
+            >
               <div
                 style={{
+                  color: '#8A92A6',
                   textAlign: 'center',
-                  marginTop: 24,
-                  height: 32,
-                  lineHeight: '32px',
                 }}
               >
-                <Button
-                  type="primary"
-                  onClick={() => navigate(`/register${window.location.search}`)}
+                <PlusOutlined />
+                <p
+                  style={{
+                    marginTop: 4,
+                    marginBottom: 0,
+                  }}
                 >
-                  去创建
-                </Button>
+                  创建
+                </p>
               </div>
-            }
-            renderItem={(tenant) => (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={<Avatar src={tenant.logo} />}
-                  title={
-                    <a
-                      href={`${window.location.protocol}//${tenant.domain}.${config.pageBaseHost}/token-set?token=${token}`}
-                    >
-                      {tenant.name}
-                    </a>
-                  }
-                  description={tenant.description || '--'}
-                />
-              </List.Item>
-            )}
-          />
-        ) : (
-          <p>
-            暂无组织，
-            <Link to={`/register${window.location.search}`}>去创建</Link>
-          </p>
-        )}
-      </Spin>
-    </Modal>
+            </div>
+            {Boolean(tenantList?.length) &&
+              tenantList!.map((item) => {
+                return (
+                  <TenantCard
+                    key={item.authingTenantId}
+                    tenant={item}
+                    token={token as string}
+                  />
+                )
+              })}
+          </div>
+        </Spin>
+      </div>
+    </>
   )
 }
