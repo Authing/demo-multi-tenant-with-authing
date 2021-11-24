@@ -19,6 +19,8 @@ const { authing } = require('../config')
 const { tenantService } = require('../models/tenant.repository')
 const { keyBy } = require('lodash')
 
+// TODO，API 都需要鉴权
+
 // 创建租户
 router.post('/api/tenant', async function (req, res, next) {
   const adminId = req.user.id

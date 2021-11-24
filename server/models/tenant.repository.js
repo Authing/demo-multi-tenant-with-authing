@@ -8,6 +8,7 @@ const Tenant = sequelize.define('Tenant', {
     allowNull: false,
     comment: '绑定的 Authing 租户 ID',
   },
+  // 正常业务应该可以存多个
   adminId: {
     type: DataTypes.STRING,
     allowNull: false,
