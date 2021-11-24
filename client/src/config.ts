@@ -5,8 +5,8 @@ export const config = {
   pageBaseHost: 'localhost:3007',
   authing: {
     // 应用 ID
-    appId: '6196462c64ead43689430b0a',
+    appId: 'xxxxxxxxxxxxxxxxx',
     // 应用域名
-    appHost: 'https://tqtfwh-demo.dev2.authing-inc.co',
+    appHost: 'https://xxx.dev2.authing-inc.co',
   },
 }
