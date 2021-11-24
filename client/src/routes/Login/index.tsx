@@ -1,8 +1,8 @@
-import { Guard as AuthingGuard } from '@authing/react-ui-components'
+import { AuthingGuard } from '@authing/react-ui-components'
 import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router'
+import { config } from '../../config'
 import { GlobalContext } from '../../context/globalContext'
-import { APP_ID, CORE_API_HOST } from '../../constants/authing'
 import './styles.less'
 
 export const Login = () => {
@@ -18,11 +18,11 @@ export const Login = () => {
   return (
     <div className="login-page">
       <AuthingGuard
-        appId={APP_ID}
+        appId={config.authing.appId}
         tenantId={tenantInfo?.authingTenantId}
         config={{
-          host: CORE_API_HOST,
-          // appHost: APP_HOST,
+          // host: CORE_API_HOST,
+          appHost: config.authing.appHost,
         }}
         onLogin={async (user) => {
           if (tenantInfo) {

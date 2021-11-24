@@ -76,3 +76,27 @@ export const addMember = async (
 
   return res.data
 }
+
+export const createTenantConnection = async (tenantId: string, data: any) => {
+  const res = await httpClient.post(`/api/tenant/${tenantId}/connections`, data)
+
+  return res.data
+}
+
+export const updateTenantConnection = async (
+  connectionId: string,
+  data: any
+) => {
+  const res = await httpClient.put(
+    `/api/tenant/connections/${connectionId}`,
+    data
+  )
+
+  return res.data
+}
+
+export const fetchTenantConnection = async (tenantId: string) => {
+  const res = await httpClient.get(`/api/tenant/${tenantId}/connections`)
+
+  return res.data
+}

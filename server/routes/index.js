@@ -8,6 +8,11 @@ const {
   removeMember,
   fetchMemberPermissions,
   createUser,
+  getTenantConnections,
+  createTenantConnection,
+  changeTenantState,
+  updateTenantConnection,
+  getConnectionDetail,
 } = require('../externalApi/authing')
 var router = express.Router()
 const { authing } = require('../config')
@@ -151,5 +156,94 @@ router.get('/api/user/me', async function (req, res, next) {
     data: req.user,
   })
 })
+
+// 获取租户的 Gitlab 身份源连接详情
+router.get(
+  '/api/tenant/:tenantId/connections',
+  async function (req, res, next) {
+    const conns = await getTenantConnections(req.params.tenantId)
+    if (!conns?.length) {
+      return res.json({
+        code: 200,
+        data: null,
+      })
+    }
+
+    const detail = await getConnectionDetail(conns[0].id)
+
+    return res.json({
+      code: 200,
+      data: detail?.connections?.[0],
+    })
+  }
+)
+
+// 创建 GitLab 身份源连接
+router.post(
+  '/api/tenant/:tenantId/connections',
+  async function (req, res, next) {
+    const {
+      name,
+      displayName,
+      type,
+      identifier,
+      clientID,
+      clientSecret,
+      baseURL,
+      connectionType,
+    } = req.body
+
+    const created = await createTenantConnection({
+      tenantId: req.params.tenantId,
+      name,
+      type,
+      connections: [
+        {
+          type: connectionType,
+          identifier,
+          displayName,
+          fields: {
+            clientID,
+            clientSecret,
+            displayName,
+            baseURL,
+          },
+        },
+      ],
+    })
+
+    // 创建成功后开启
+    await changeTenantState(created.connections[0].id, {
+      tenantId: req.params.tenantId,
+      enabled: true,
+    })
+
+    return res.json({
+      code: 200,
+      data: created,
+    })
+  }
+)
+
+// 更新 GitLab 身份源连接
+router.put(
+  '/api/tenant/connections/:connectionId',
+  async function (req, res, next) {
+    const { clientID, clientSecret, displayName, baseURL } = req.body
+
+    return res.json({
+      code: 200,
+      data: await updateTenantConnection(req.params.connectionId, {
+        displayName,
+        fields: {
+          baseURL,
+          clientSecret,
+          clientID,
+          displayName,
+        },
+      }),
+    })
+  }
+)
 
 module.exports = router

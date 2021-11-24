@@ -4,7 +4,7 @@ const { authing } = require('../config')
 const managementClient = new ManagementClient({
   userPoolId: authing.userPoolId,
   secret: authing.userPoolSecret,
-  host: authing.appHost,
+  host: authing.host,
 })
 
 // 创建租户
@@ -117,6 +117,67 @@ async function getUserDetail(id) {
   }
 }
 
+// 获取租户身份源列表
+async function getTenantConnections(id) {
+  try {
+    const res = await managementClient.tenant.listExtIdp(id)
+
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
+// 获取身份源详情
+async function getConnectionDetail(id) {
+  try {
+    const res = await managementClient.tenant.extIdpDetail(id)
+
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
+// 给租户创建身份源
+async function createTenantConnection(data) {
+  try {
+    const res = await managementClient.tenant.createExtIdp(data)
+
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+// 更新租户身份源
+async function updateTenantConnection(id, data) {
+  try {
+    const res = await managementClient.tenant.updateExtIdpConnection(id, data)
+
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+// 修改租户身份源状态
+async function changeTenantState(id, data) {
+  try {
+    const res = await managementClient.tenant.changeExtIdpConnectionState(
+      id,
+      data
+    )
+
+    return res
+  } catch (e) {
+    console.log(e, '>>>>')
+    return null
+  }
+}
+
 module.exports = {
   createUser,
   removeMember,
@@ -125,6 +186,11 @@ module.exports = {
   addUserToTenant,
   fetchUserTenants,
   fetchTenantDetail,
+  changeTenantState,
+  getConnectionDetail,
   fetchTenantUserList,
+  getTenantConnections,
+  createTenantConnection,
+  updateTenantConnection,
   fetchMemberPermissions,
 }

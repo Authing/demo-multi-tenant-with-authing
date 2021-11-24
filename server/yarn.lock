@@ -121,10 +121,10 @@ asynckit@^0.4.0:
   resolved "https://registry.npmmirror.com/asynckit/download/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
 
-authing-js-sdk@4.22.26-alpha.3:
-  version "4.22.26-alpha.3"
-  resolved "https://registry.npmmirror.com/authing-js-sdk/download/authing-js-sdk-4.22.26-alpha.3.tgz?cache=0&sync_timestamp=1637319427480&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fauthing-js-sdk%2Fdownload%2Fauthing-js-sdk-4.22.26-alpha.3.tgz#12645ecba5cbbbb690a18d3e0f2f4bf6f2fb7f3e"
-  integrity sha512-l3iltOUhOGoDUyfCeBGC+bVnoqxiPt/9MTbfQBsRx+OprQW/xrLZV//nVlynw6e7bS9KK2YJF9sWGixcdFYntQ==
+authing-js-sdk@4.22.26-alpha.8:
+  version "4.22.26-alpha.8"
+  resolved "https://registry.npmmirror.com/authing-js-sdk/download/authing-js-sdk-4.22.26-alpha.8.tgz#8976dcc206b74b2c93055e8fbc86f951a525225a"
+  integrity sha512-sSUuXvof1NrsVzgVTUs8OISPyrYo/NcfUlaMLOWUDlmbog9ReUedYR/kYGKUtgsnVTjA8JRPiRyx76OoYu1KJA==
   dependencies:
     "@authing/jose" "^1.0.3"
     axios "^0.19.2"

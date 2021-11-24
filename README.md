@@ -8,8 +8,15 @@
 authing.userPoolId = '<your user pool id>'
 authing.userPoolSecret = '<your user pool secret>'
 authing.appId = '<your app id>'
+authing.appSecret = '<your app secret>'
+authing.host = '<your app host>，Authing api 地址，一般为 https://core.authing.cn'
+```
+
+修改 `client/config.ts` 文件，修改以下配置：
+
+```
+authing.appId = '<your app id>'
 authing.appHost = '<your app host>'
-topLevelDomain = 'Authing 顶级域名，一般为 authing.cn'
 ```
 
 ### 启动后端服务

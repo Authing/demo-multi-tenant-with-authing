@@ -1,11 +1,17 @@
 import { Tabs } from 'antd'
-import { useCallback, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
+import { GlobalContext } from '../../../context/globalContext'
 import './styles.less'
+import { GitlabConnection } from './GitlabConnection'
 
 const tabs = [
+  // {
+  //   key: 'oidc',
+  //   title: 'OIDC 配置',
+  // },
   {
-    key: 'oidc',
-    title: 'OIDC 配置',
+    key: 'gitlab',
+    title: 'Gitlab 登录',
   },
   {
     key: 'project',
@@ -22,19 +28,20 @@ const tabs = [
 ]
 
 export const Setting = () => {
-  const [activeKey, setActiveKey] = useState('oidc')
+  const [activeKey, setActiveKey] = useState('gitlab')
+  const { tenant } = useContext(GlobalContext)
 
   const getCurrContent = useCallback(() => {
     switch (activeKey) {
-      case 'oidc':
-        return 'oidc'
+      case 'gitlab':
+        return <GitlabConnection tenantId={tenant!.authingTenantId} />
 
       default:
         return <>Demo</>
     }
-  }, [activeKey])
+  }, [activeKey, tenant])
 
-  return (
+  return tenant ? (
     <div className="setting-page">
       <div className="setting-tabs">
         <Tabs
@@ -52,5 +59,7 @@ export const Setting = () => {
 
       <div className="setting-tab-content">{getCurrContent()}</div>
     </div>
+  ) : (
+    <></>
   )
 }
