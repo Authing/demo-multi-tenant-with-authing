@@ -12,7 +12,7 @@ authing.appSecret = '<your app secret>'
 authing.host = '<your app host>，Authing api 地址，一般为 https://core.authing.cn'
 ```
 
-修改 `client/config.ts` 文件，修改以下配置：
+修改 `client/src/config.ts` 文件，修改以下配置：
 
 ```
 authing.appId = '<your app id>'
