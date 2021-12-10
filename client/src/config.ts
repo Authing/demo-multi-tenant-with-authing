@@ -7,6 +7,6 @@ export const config = {
     // 应用 ID
     appId: 'xxxxxxxxxxxxxxxxx',
     // 应用域名
-    appHost: 'https://xxx.dev2.authing-inc.co',
+    appHost: 'https://xxx.authing.cn',
   },
 }

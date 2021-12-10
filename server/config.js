@@ -9,6 +9,6 @@ module.exports = {
     // 应用密钥
     appSecret: 'xxxxxxxxxxxxxxxxx',
     // Authing api 服务地址，若非私有部署为 https://core.authing.cn
-    host: 'https://core.dev2.authing-inc.co',
+    host: 'https://core.authing.cn',
   },
 }
