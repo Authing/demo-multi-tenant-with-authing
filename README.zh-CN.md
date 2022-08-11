@@ -1,4 +1,4 @@
-# Authing Tenants Demo
+# Authing 多租户 Demo
 
 <div align=center>
   <img width="250" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
@@ -9,16 +9,16 @@
   <a href="https://opensource.org/licenses/MIT" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
 </div>
 
-**English** | [简体中文](./README.zh-CN.md)
+**简体中文** | [English](./README.md)
 
-## Introduction
+## 简介
 
-This demo will show you how to use Authing to develop a SaaS software called Uthing. Let us take the example software Uthing as an example, Uthing is an advanced enterprise collaboration tool that provides efficient workflow management functions, and it is also a SaaS software on which different companies can manage their own workflows.
+此 Demo 程序将为你演示如何使用 Authing 开发一个名为 Uthing 的 SaaS 软件。让我们以示例软件 Uthing 为例，Uthing 是一款先进的企业协作工具，提供高效的工作流管理功能，同时它也是一款 SaaS 软件，不同的公司都能在上面管理自己的工作流。
 
 
-## Change Setting
+## 修改配置
 
-Modify the `/server/config.js` file and modify the following configuration:
+修改 `/server/config.js` 文件，修改以下配置：
 
 ```js
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
 }
 ```
 
-Modify the `client/src/config.ts` file and modify the following configuration:
+修改 `/client/src/config.ts` 文件，修改以下配置：
 
 ```js
 export const config = {
@@ -45,9 +45,9 @@ export const config = {
 }
 ```
 
-## Start the backend service
+## 启动后端服务
 
-Open a terminal and execute
+打开终端，执行
 
 ```sh
 cd server
@@ -55,9 +55,9 @@ yarn install
 yarn start
 ```
 
-## Start the front-end service
+## 启动前端服务
 
-Open another terminal and execute
+打开另一个终端，执行
 
 ```sh
 cd client
@@ -65,9 +65,10 @@ yarn install
 yarn start
 ```
 
-## start complete
+## 启动完成
 
-Visit `http://localhost:3007/login`
+访问 `http://localhost:3007/login`
+
 
 
 ## License
